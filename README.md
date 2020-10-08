@@ -1,2 +1,2 @@
-# fullstackopen_course
-JS React Repo made during the fullstackopen.com course.
+# Fullstackopen.com course repository
+Repo with all of submissions made during the course.
