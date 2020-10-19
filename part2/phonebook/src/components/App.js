@@ -71,7 +71,7 @@ const App = () => {
     setMessage(message);
     setTimeout(() => {
       setMessage(null);
-    }, 4000);
+    }, 5000);
   };
 
   useEffect(() => {
@@ -107,18 +107,23 @@ const App = () => {
             makeMessage(`${newName} is updated`, 'success');
           })
           .catch((e) => {
-            makeMessage(`${newName} is already deleted from server`, 'error');
+            makeMessage(`${e.response.data.error}`);
           });
       }
     } else {
       const newPerson = {
         name: newName,
         number: newNumber,
-        id: persons[persons.length - 1].id + 1,
       };
-      personService.create(newPerson);
-      setPersons(persons.concat(newPerson));
-      makeMessage(`${newName} is added to phonebook`, 'success');
+      personService
+        .create(newPerson)
+        .then(() => {
+          setPersons(persons.concat(newPerson));
+          makeMessage(`${newName} is added to phonebook`, 'success');
+        })
+        .catch((err) => {
+          makeMessage(`${err.response.data.error}`);
+        });
     }
     setNewName('');
     setNewNumber('');

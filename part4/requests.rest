@@ -1,0 +1,55 @@
+GET http://localhost:3001/api/blogs
+
+###
+POST http://localhost:3001/api/blogs
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkozIiwiaWQiOiI1ZjhkOGM3ZmJiYTQwZDM4YTg1YmY1ZGYiLCJpYXQiOjE2MDMxMTU2NTF9.4Ufw_BjGiUF6alO97oXDfVFsOLY3oErS1OUwqN577J0
+
+{
+	"author": "BES TUATHOR",
+	"title": "JWT TOKEN RULES"
+}
+
+###
+DELETE http://localhost:3001/api/blogs/5f8da5f95914b82024c00132
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkozIiwiaWQiOiI1ZjhkOGM3ZmJiYTQwZDM4YTg1YmY1ZGYiLCJpYXQiOjE2MDMxMTU2NTF9.4Ufw_BjGiUF6alO97oXDfVFsOLY3oErS1OUwqN577J0
+
+
+
+###
+PUT http://localhost:3001/api/blogs/5f8ca5b1ca06b532605de08a
+content-type: application/json
+
+{
+	"author": "Avgust",
+	"title": "updated Blog",
+	"url": "www.google.com",
+	"likes": 1123123
+}
+
+###
+
+GET http://localhost:3001/api/users
+
+
+###
+POST http://localhost:3001/api/users
+content-type: application/json
+
+{
+	"username": "J3",
+	"name" : "Vasiliy Shashkin",
+	"password": "none"
+}
+
+###
+POST http://localhost:3001/api/login
+content-type: application/json
+
+
+{
+	"username": "J3",
+	"password": "none"
+}
+
