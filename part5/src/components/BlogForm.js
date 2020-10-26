@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
+import { addBlog } from '../reducers/blogReducer'
 
-const BlogForm = ({ makeMessage, setColor, addBlog }) => {
+const BlogForm = () => {
+  const dispatch = useDispatch()
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -8,15 +12,16 @@ const BlogForm = ({ makeMessage, setColor, addBlog }) => {
   const handleCreate = async (event) => {
     event.preventDefault()
     try {
-      await addBlog({ title, author, url })
-      setColor('green')
-      makeMessage(`A new blog ${title} by ${author} was created`)
+      dispatch(addBlog({ title, author, url }))
+      dispatch(
+        setNotification(`A new blog ${title} by ${author} was created`, 'green')
+      )
       setTitle('')
       setAuthor('')
       setUrl('')
+      dispatch({ type: 'HIDE' })
     } catch (err) {
-      setColor('red')
-      makeMessage(err.message)
+      dispatch(setNotification(err.message, 'red'))
       console.log(err.message)
     }
   }

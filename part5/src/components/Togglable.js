@@ -1,33 +1,33 @@
-import React, { useState, useImperativeHandle } from 'react'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  setVisibilityHide,
+  setVisibilityShow,
+} from '../reducers/visibilityReducer'
 
-const Togglable = React.forwardRef(({ children, showText, hideText }, ref) => {
-  const [visible, setVisible] = useState(false)
+const Togglable = ({ children, showText, hideText }) => {
+  const visible = useSelector((state) => state.visibility)
+  const dispatch = useDispatch()
 
   const showWhenVisible = { display: visible ? '' : 'none' }
   const hideWhenVisible = { display: visible ? 'none' : '' }
-
-  const toggleVisibility = () => {
-    setVisible(!visible)
-  }
-
-  useImperativeHandle(ref, () => {
-    return {
-      toggleVisibility,
-    }
-  })
 
   return (
     <div>
       <div style={showWhenVisible}>
         {children}
-        <button onClick={() => setVisible(false)}>{hideText}</button>
+        <button onClick={() => dispatch(setVisibilityHide())}>
+          {hideText}
+        </button>
       </div>
       <div style={hideWhenVisible}>
-        <button onClick={() => setVisible(true)}>{showText}</button>
+        <button onClick={() => dispatch(setVisibilityShow())}>
+          {showText}
+        </button>
       </div>
     </div>
   )
-})
+}
 
 Togglable.displayName = 'Togglable'
 

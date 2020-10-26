@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { updateBlog, removeBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, updateBlog, removeBlog, userId }) => {
+const Blog = ({ blog, userId }) => {
+  const dispatch = useDispatch()
+
   const [visible, setVisible] = useState(false)
   const [btnText, setBtnText] = useState('view')
-  const [likes, setLikes] = useState(blog.likes)
 
   const showWhenVisible = { display: visible ? '' : 'none' }
 
   const updateLikes = async () => {
     try {
-      const newBlog = { ...blog, likes: likes + 1 }
-      setLikes(likes + 1)
-      await updateBlog(newBlog)
+      const newBlog = { ...blog, likes: blog.likes + 1 }
+      dispatch(updateBlog(newBlog))
     } catch (err) {
       console.log(err.message)
     }
@@ -23,7 +25,7 @@ const Blog = ({ blog, updateBlog, removeBlog, userId }) => {
     )
     if (result) {
       try {
-        await removeBlog(blog.id)
+        dispatch(removeBlog(blog.id))
       } catch (err) {
         console.log(err)
       }
@@ -53,7 +55,7 @@ const Blog = ({ blog, updateBlog, removeBlog, userId }) => {
       <div className="testHidden" style={showWhenVisible}>
         <div>{blog.url}</div>
         <div>
-          likes {likes}{' '}
+          likes {blog.likes}{' '}
           <button className="clickToLike" onClick={updateLikes}>
             like
           </button>{' '}

@@ -1,23 +1,29 @@
 import React, { useState } from 'react'
-import loginService from '../services/login'
+import { useDispatch } from 'react-redux'
+import { logInAsUser } from '../reducers/userReducer'
+import { setNotification } from '../reducers/notificationReducer'
+import { Redirect } from 'react-router-dom'
 
-const Login = ({ setUser, makeMessage, setColor }) => {
+const Login = () => {
+  const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [redirect, setRedirect] = useState(false)
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    try {
-      const result = await loginService.login({ username, password })
-      setUsername('')
+    dispatch(logInAsUser({ username, password })).catch(() => {
       setPassword('')
-      setUser(result)
-      window.localStorage.setItem('loggedUser', JSON.stringify(result))
-    } catch (err) {
-      setColor('red')
-      setPassword('')
-      makeMessage('Wrong login or password')
-    }
+      dispatch(setNotification('Wrong login or password', 'red'))
+    })
+    setUsername('')
+    setPassword('')
+
+    setRedirect(true)
+  }
+
+  if (redirect) {
+    return <Redirect to="/" />
   }
 
   return (
