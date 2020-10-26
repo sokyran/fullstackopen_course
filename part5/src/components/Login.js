@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { logInAsUser } from '../reducers/userReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { Redirect } from 'react-router-dom'
+import { allowRedirect } from '../reducers/userReducer'
 
 const Login = () => {
   const dispatch = useDispatch()
+  const redirect = useSelector((state) => state.user.redirect)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [redirect, setRedirect] = useState(false)
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -18,13 +19,10 @@ const Login = () => {
     })
     setUsername('')
     setPassword('')
-
-    setRedirect(true)
+    dispatch(allowRedirect())
   }
 
-  if (redirect) {
-    return <Redirect to="/" />
-  }
+  if (redirect) return <Redirect exact to="/" />
 
   return (
     <div>

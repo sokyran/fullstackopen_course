@@ -36,11 +36,15 @@ const App = () => {
     <Router>
       <Header />
       <Switch>
+        <Route exact path="/login">
+          <h2>Log in to application</h2>
+          <Message />
+          <Login />
+        </Route>
         <Route
-          exact
           path="/"
           render={() =>
-            Object.keys(user).length ? (
+            window.localStorage.getItem('loggedUser') ? (
               <div>
                 <h3>Blogs</h3>
                 <Message />
@@ -64,11 +68,6 @@ const App = () => {
             )
           }
         />
-        <Route path="/login">
-          <h2>Log in to application</h2>
-          <Message />
-          <Login />
-        </Route>
       </Switch>
     </Router>
   )

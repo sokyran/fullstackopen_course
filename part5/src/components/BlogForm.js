@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
 import { addBlog } from '../reducers/blogReducer'
+import { setVisibilityHide } from '../reducers/visibilityReducer'
 
 const BlogForm = () => {
   const dispatch = useDispatch()
@@ -19,7 +20,7 @@ const BlogForm = () => {
       setTitle('')
       setAuthor('')
       setUrl('')
-      dispatch({ type: 'HIDE' })
+      dispatch(setVisibilityHide())
     } catch (err) {
       dispatch(setNotification(err.message, 'red'))
       console.log(err.message)

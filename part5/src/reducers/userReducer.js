@@ -4,9 +4,11 @@ import blogService from '../services/blogs'
 const userReducer = (state = {}, action) => {
   switch (action.type) {
     case 'SET_USER':
-      return action.data
+      return { ...action.data, redirect: false }
     case 'CLEAR_USER':
       return {}
+    case 'ALLOW_REDIRECT':
+      return { ...state, redirect: true }
     default:
       return state
   }
@@ -17,6 +19,10 @@ export const setUser = (data) => {
     blogService.setToken(data.token)
     dispatch({ type: 'SET_USER', data })
   }
+}
+
+export const allowRedirect = () => {
+  return { type: 'ALLOW_REDIRECT' }
 }
 
 export const clearUser = () => {
@@ -34,4 +40,5 @@ export const logInAsUser = ({ username, password }) => {
     dispatch({ type: 'SET_USER', data: result })
   }
 }
+
 export default userReducer
