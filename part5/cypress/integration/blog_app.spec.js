@@ -47,7 +47,7 @@ Cypress.Commands.add('createBlog', ({ title, author, url, likes }) => {
   })
 })
 
-describe.only('Afterlog', function () {
+describe('Afterlog', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3001/api/testing/reset')
 

@@ -13,13 +13,16 @@ const Login = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    dispatch(logInAsUser({ username, password })).catch(() => {
-      setPassword('')
-      dispatch(setNotification('Wrong login or password', 'red'))
-    })
-    setUsername('')
-    setPassword('')
-    dispatch(allowRedirect())
+    dispatch(logInAsUser({ username, password }))
+      .then(() => {
+        setUsername('')
+        setPassword('')
+        dispatch(allowRedirect())
+      })
+      .catch(() => {
+        setPassword('')
+        return dispatch(setNotification('Wrong login or password', 'red'))
+      })
   }
 
   if (redirect) return <Redirect exact to="/" />

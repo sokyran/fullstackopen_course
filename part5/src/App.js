@@ -1,73 +1,57 @@
 import React, { useEffect } from 'react'
-import Blog from './components/Blog'
 import Login from './components/Login'
+import Header from './components/Header'
 import Message from './components/Message'
+import UserList from './components/UserList'
+import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
-import Header from './components/Header'
-import {
-  BrowserRouter as Router,
-  Link,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom'
+import BlogDetails from './components/BlogDetails'
+import Navigation from './components/Navigation'
+import UserDetails from './components/UserDetails'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { initBlogs } from './reducers/blogReducer'
-import { setUser, clearUser } from './reducers/userReducer'
+import { initUsers } from './reducers/usersReducer'
+import { setUser } from './reducers/userReducer'
 
 const App = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
-  const blogs = useSelector((state) => state.blogs)
 
   useEffect(() => {
     if (window.localStorage.getItem('loggedUser')) {
       const loggedUser = JSON.parse(window.localStorage.getItem('loggedUser'))
       dispatch(setUser(loggedUser))
     }
+    dispatch(initUsers())
   }, [dispatch])
 
-  useEffect(() => {
-    dispatch(initBlogs())
-  }, [dispatch])
+  if (!Object.keys(user).length) {
+    return (
+      <div>
+        <h2>Log in to application</h2>
+        <Message />
+        <Login />
+      </div>
+    )
+  }
 
   return (
     <Router>
-      <Header />
+      <Navigation />
+      <Header username={user.name} />
       <Switch>
-        <Route exact path="/login">
-          <h2>Log in to application</h2>
-          <Message />
-          <Login />
+        <Route path="/users/:id" component={UserDetails} />
+        <Route path="/users" component={UserList} />
+        <Route path="/blogs/:id" component={BlogDetails} />
+        <Route path="/">
+          <div>
+            <Togglable hideText="cancel" showText="create new blog">
+              <BlogForm />
+            </Togglable>
+            <BlogList />
+          </div>
         </Route>
-        <Route
-          path="/"
-          render={() =>
-            window.localStorage.getItem('loggedUser') ? (
-              <div>
-                <h3>Blogs</h3>
-                <Message />
-                <p>
-                  Signed in as `{user.name}`{' '}
-                  <button onClick={() => dispatch(clearUser())}>logout</button>{' '}
-                </p>
-
-                <Togglable hideText="cancel" showText="create new blog">
-                  <h3>Create new blog</h3>
-                  <BlogForm />
-                </Togglable>
-
-                <h3>Current blogs</h3>
-                {blogs.map((blog) => (
-                  <Blog key={blog.id} blog={blog} userId={user.id} />
-                ))}
-              </div>
-            ) : (
-              <Redirect to="/login" />
-            )
-          }
-        />
       </Switch>
     </Router>
   )

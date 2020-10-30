@@ -1,11 +1,21 @@
 import React from 'react'
+import Message from './Message'
+import { useDispatch } from 'react-redux'
+import { clearUser } from '../reducers/userReducer'
 
-const Header = () => {
+const Header = ({ username }) => {
+  const dispatch = useDispatch()
   return (
-    <h1>
-      {' '}
-      <em>Blogs page </em>{' '}
-    </h1>
+    <div>
+      <h1>
+        <em>Blogs</em>
+      </h1>
+      <Message />
+      <p>
+        Signed in as `{username}`{' '}
+        <button onClick={() => dispatch(clearUser())}>logout</button>{' '}
+      </p>
+    </div>
   )
 }
 
