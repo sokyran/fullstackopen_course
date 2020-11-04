@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 const UserList = () => {
   const users = useSelector((state) => state.users)
   const usersToShow = users.sort((a, b) => (a.likes > b.likes ? 1 : -1))
-  console.log(usersToShow)
   return (
     <div>
       <h2>Users</h2>
